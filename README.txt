@@ -1,9 +1,8 @@
-#!/usr/bin/env python
 # kiwi weekend task - find flight and book ticket
- 
- 
- 
-Obsah nápovědy:
+
+
+Obsah README:
+=============
  
 1) soubory
 2) řešení
@@ -11,10 +10,12 @@ Obsah nápovědy:
 4) konfigurační hodnoty v souboru conf.py
 5) příklady použití
  
+
  
  
 1) soubory:
- 
+===========
+
 	conf.py 					- konfigurační soubor
 	flight.py 					- program
 	iata_airports.dat 			- data s lokacemi dle IATA
@@ -24,7 +25,8 @@ Obsah nápovědy:
  
  
 2) řešení:
- 
+==========
+
 	- vytvořím slovník IATA lokací z uloženého souboru nebo z online zdroje (requests, re)
 	- získám vstupní data od uživatele z argumentu a získám seznam proměnných k vyhledání letu (optionparser )
 	- vygeneruji url s parametry pro vyhledání letu (urlib)
@@ -32,11 +34,10 @@ Obsah nápovědy:
 	- zavolám book api, odešlu json a získám odpověď
 	- pokud opdověď obsahuje potvrzovací kód, vypíšu konfirmační kód jinak nulu
 
- 
- 
+
  
 3) nápověda spuštení:
- 
+===================== 
  
 	Usage: flight.py [options]
  	
@@ -56,11 +57,9 @@ Obsah nápovědy:
  
  
  
- 
 4) konfigurační hodnoty v souboru conf.py:
- 
- 
- 
+========================================== 
+  
 	flight_search_server_url		- api url for search flights
 	book_api_server					- api url for search flights 
 	iata_source 					- nastavení zdroje IATA lokací, "local" pro užití lokálního zdroje dat, "online" pro stažení IATA kódu z online zdroje
@@ -75,15 +74,12 @@ Obsah nápovědy:
 	psg_last_name 	=  příjmení
 	psg_birthday 	=  datum narození YYYY-MM-DD
  
- 
- 
- 
+  
 5) příklady použití: 
- 
- 
- 
+==================== 
+  
  	příklad užití při nastavení logging = 0 (default)
- 
+ 	-------------------------------------------------
 
 		 	./flight.py --from NYC --to PRG --date 2018-03-03
 		>>> E353ICA
@@ -102,59 +98,60 @@ Obsah nápovědy:
 
 
 	příklad užití při nastavení logging = 1
+	---------------------------------------
 
-		./flight.py --from NYC --to PRG --date 2018-03-03
-	>>>	---------------- route parameters ----------------
-		From: [NYC - 22 ] : NEW_YORK,_NEW_YORK,_USA
-		To:   [PRG - 418 ] : PRAGUE,_CZECH_REPUBLIC
-		Date: 2018-03-03
-		Searching for cheapest route
-		Searching for return ticket in: 0 day/s
-		Searching for ticket with 0 bags
-		--------------------------------------------------
-		Your book reservation ticket code: 
-		APYRSNI
-		
-		
-		./flight.py --from NYC --to PRG --date 2018-03-03 --return 6  --bags 8
-	>>>	---------------- route parameters ----------------
-		From: [NYC - 22 ] : NEW_YORK,_NEW_YORK,_USA
-		To:   [PRG - 418 ] : PRAGUE,_CZECH_REPUBLIC
-		Date: 2018-03-03
-		Searching for cheapest route
-		Searching for return ticket in: 6 day/s
-		Searching for ticket with 8 bags
-		--------------------------------------------------
-		Your book reservation ticket code: 
-		CNZKLMQ
-		
-		
-		./flight.py --from NYC --to PRG --date 2018-03-03 --return 6  --bags 8 --fastest
-	>>>	---------------- route parameters ----------------
-		From: [NYC - 22 ] : NEW_YORK,_NEW_YORK,_USA
-		To:   [PRG - 418 ] : PRAGUE,_CZECH_REPUBLIC
-		Date: 2018-03-03
-		Searching for fastest route
-		Searching for return ticket in: 6 day/s
-		Searching for ticket with 8 bags
-		--------------------------------------------------
-		Your book reservation ticket code: 
-		B4RSPII
-		
-		
-		./flight.py
-	>>> AttributeError: ERROR: Missing reqired argument '--date' 
-		
-		
-		
-		./flight.py --from NYC --to PRG --date 2333-03-03 --return 6  --bags 8 --fastest
-	>>>	---------------- route parameters ----------------
-		From: [NYC - 22 ] : NEW_YORK,_NEW_YORK,_USA
-		To:   [PRG - 418 ] : PRAGUE,_CZECH_REPUBLIC
-		Date: 2333-03-03
-		Searching for fastest route
-		Searching for return ticket in: 6 day/s
-		Searching for ticket with 8 bags
-		--------------------------------------------------
-		ERR: No flight founded! 
-		0
+			./flight.py --from NYC --to PRG --date 2018-03-03
+		>>>	---------------- route parameters ----------------
+			From: [NYC - 22 ] : NEW_YORK,_NEW_YORK,_USA
+			To:   [PRG - 418 ] : PRAGUE,_CZECH_REPUBLIC
+			Date: 2018-03-03
+			Searching for cheapest route
+			Searching for return ticket in: 0 day/s
+			Searching for ticket with 0 bags
+			--------------------------------------------------
+			Your book reservation ticket code: 
+			APYRSNI
+			
+			
+			./flight.py --from NYC --to PRG --date 2018-03-03 --return 6  --bags 8
+		>>>	---------------- route parameters ----------------
+			From: [NYC - 22 ] : NEW_YORK,_NEW_YORK,_USA
+			To:   [PRG - 418 ] : PRAGUE,_CZECH_REPUBLIC
+			Date: 2018-03-03
+			Searching for cheapest route
+			Searching for return ticket in: 6 day/s
+			Searching for ticket with 8 bags
+			--------------------------------------------------
+			Your book reservation ticket code: 
+			CNZKLMQ
+			
+			
+			./flight.py --from NYC --to PRG --date 2018-03-03 --return 6  --bags 8 --fastest
+		>>>	---------------- route parameters ----------------
+			From: [NYC - 22 ] : NEW_YORK,_NEW_YORK,_USA
+			To:   [PRG - 418 ] : PRAGUE,_CZECH_REPUBLIC
+			Date: 2018-03-03
+			Searching for fastest route
+			Searching for return ticket in: 6 day/s
+			Searching for ticket with 8 bags
+			--------------------------------------------------
+			Your book reservation ticket code: 
+			B4RSPII
+			
+			
+			./flight.py
+		>>> AttributeError: ERROR: Missing reqired argument '--date' 
+			
+			
+			
+			./flight.py --from NYC --to PRG --date 2333-03-03 --return 6  --bags 8 --fastest
+		>>>	---------------- route parameters ----------------
+			From: [NYC - 22 ] : NEW_YORK,_NEW_YORK,_USA
+			To:   [PRG - 418 ] : PRAGUE,_CZECH_REPUBLIC
+			Date: 2333-03-03
+			Searching for fastest route
+			Searching for return ticket in: 6 day/s
+			Searching for ticket with 8 bags
+			--------------------------------------------------
+			ERR: No flight founded! 
+			0
