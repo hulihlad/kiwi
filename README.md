@@ -1,4 +1,4 @@
-# kiwi weekend task - finf flight and book ticket
+# kiwi weekend task - find flight and book ticket
 =================================================
 
 Obsah nápovědy:
