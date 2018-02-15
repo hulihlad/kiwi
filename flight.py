@@ -30,6 +30,7 @@ def download_actual_iata_codes():
 
 def import_iata_codes():
 	# create dictionary from stored iata codes data
+	# dict contains IATA location name, area code and IATA code
 	try:
 		if iata_source == "local":
 			iata_file = open("iata_airports.dat","r")
@@ -56,16 +57,19 @@ def import_iata_codes():
 		print("LOG: " + str(err) )
 
 def get_arguments():
-	# get user arguments
+	# get user arguments, normalizace output values
+	# this function return list which contains:
+	# from_destination, from_destination_area, from_destination_IATA, finish_destination, finish_destination_area, finish_destination_IATA, routedate, cheapest_arg, fastest_arg, return_arg, bags_arg]
+
 	parser = OptionParser()
-	parser.add_option("--one-way", 		action="store_false", 												help=" indikuje potrebu zakaznika letet jenom jednim smerem")
-	parser.add_option("--return", 		action="store",			type="int", 	dest="returnn",				help=" zabookovat let s cestujicim, ktery v destinaci zustava",  )
-	parser.add_option("--cheapest",  	action="store_false",					dest="cheapest", 			help=" zabookuje nejlevnejsi let")
+	parser.add_option("--one-way", 		action="store_false", 												help=" indikuje potrebu zakaznika letet jenom jednim smerem (default)")
+	parser.add_option("--return", 		action="store",			type="int", 	dest="returnn",				help=" zabookovat let s cestujicim, ktery v destinaci zustava tento pocet dnu [int]",  )
+	parser.add_option("--cheapest",  	action="store_false",					dest="cheapest", 			help=" zabookuje nejlevnejsi let (default)")
 	parser.add_option("--fastest", 		action="store_false",					dest="fastest",				help=" zabookoje nejrychlejsi let")
-	parser.add_option("--bags",  		action="store", 		type="int", 	dest="bags", 				help="  zabookovat let se zavazadly", )
-	parser.add_option("--from",  		action="store", 		type="string", 	dest="fromm",				help=" odlet z letiste [IATA]", )
-	parser.add_option("--to", 			action="store", 		type="string", 	dest="to",					help=" cilova destinace [IATA]", )	
-	parser.add_option("--date", 		action="store", 		type="string", 	dest="routedate",			help=" date of route", )	
+	parser.add_option("--bags",  		action="store", 		type="int", 	dest="bags", 				help=" zabookovat let se zavazadly s timto poctem zavazadel [int]", )
+	parser.add_option("--from",  		action="store", 		type="string", 	dest="fromm",				help=" odlet z letiste IATA code [str]", )
+	parser.add_option("--to", 			action="store", 		type="string", 	dest="to",					help=" cilova destinace IATA code [str]", )	
+	parser.add_option("--date", 		action="store", 		type="string", 	dest="routedate",			help=" date of route [YYYY-MM-DD]", )	
 
 	(options, args) = parser.parse_args()
 	return_arg = options.returnn
@@ -75,15 +79,12 @@ def get_arguments():
 	from_arg = options.fromm
 	to_arg = options.to
 	routedate = options.routedate
-
 	if routedate == None:
 		raise AttributeError("ERROR: Missing reqired argument '--date' ")
 	try:
 		routedate = datetime.strptime(routedate, "%Y-%m-%d")
 	except:
 		raise AttributeError("ERROR: Bad date format, use: YYYY-MM-DD")
-
-
 	if str(fastest_arg) == "False":
 		cheapest_arg = 0
 		fastest_arg = 1
@@ -96,18 +97,14 @@ def get_arguments():
 	if from_arg == None:
 		print("ERROR: Missing reqired argument '--to' ")
 		raise AttributeError("ERROR: Missing reqired argument '--from' ")
-	
 	if (bags_arg != None) and (bags_arg > 0):
 		bags_arg = bags_arg
 	else:
 		bags_arg = 0
-
 	if (return_arg != None) and (return_arg > 0):
 		return_arg = return_arg
 	else:
 		return_arg = 0
-
-
 	try:
 		a = iata_codes_dict[to_arg]
 	except:
@@ -127,6 +124,7 @@ def get_arguments():
 	from_destination = from_destination.replace(" ", "_")
 	finish_destination = finish_destination.replace(" ", "_")
 
+	#print flight properties if logging is turned on
 	if logging == 1:
 		print("---------------- route parameters ----------------")
 		print("From: [" + from_destination_IATA + " - " + from_destination_area + " ] : " + from_destination)
@@ -148,6 +146,7 @@ def get_arguments():
 
 def compose_url_find_flight_api(arguments_list):
 	#compose url for find flight API
+
 	from_destination, from_destination_area, from_destination_IATA, finish_destination, finish_destination_area, finish_destination_IATA, routedate, cheapest_arg, fastest_arg, return_arg, bags_arg = arguments_list
 	
 	#arguments used in each api call
@@ -197,10 +196,11 @@ def compose_url_find_flight_api(arguments_list):
 		find_flight_url = (find_flight_url+"&{}").format(urllib.urlencode(flight_args))
 
 	return find_flight_url
+ 
 
 
-
-def compose_url_book_ticket_api_data(flight_data_dict, user_arguments_list):
+def compose_arg_json_for_book_api(flight_data_dict, user_arguments_list):
+	#compose json used for flight book api call
 	passanger_data = [{"title": psg_title , "documentID":psg_documID, "email":psg_email, "firstName":psg_first_name, "lastName": psg_last_name, "birthday": psg_birthday }]
 	dict_of_book_api_arguments = {}
 	booking_token = ((flight_data_dict["data"])[0])["booking_token"]
@@ -242,7 +242,7 @@ except Exception as err:
 	quit()
 
 # compose book api url
-json_of_book_api_arguments = compose_url_book_ticket_api_data(flight_data_dict, user_arguments_list)
+json_of_book_api_arguments = compose_arg_json_for_book_api(flight_data_dict, user_arguments_list)
 
 #call book API 
 book_api_call = requests.post ( book_api_server + "booking",json=json_of_book_api_arguments )
