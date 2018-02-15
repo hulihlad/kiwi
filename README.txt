@@ -1,3 +1,4 @@
+#!/usr/bin/env python
 # kiwi weekend task - find flight and book ticket
  
  
