@@ -1,5 +1,6 @@
 # kiwi weekend task - find flight and book ticket
-=================================================
+
+
 
 Obsah nápovědy:
 1) soubory
@@ -11,7 +12,6 @@ Obsah nápovědy:
 
 
 1) soubory:
-===========
 
 	conf.py 					- konfigurační soubor
 	flight.py 					- program
@@ -20,8 +20,8 @@ Obsah nápovědy:
 			*soubor je vytvořen jen pokud se stahuje aktuální seznam IATA lokací z internetu.
 
 
+
 2) řešení:
-==========
 
 	- vytvořím slovník IATA lokací z uloženého souboru nebo z online zdroje (requests, re)
 	- získám vstupní data od uživatele z argumentu a získám seznam proměnných k vyhledání letu (optionparser )
@@ -30,8 +30,11 @@ Obsah nápovědy:
 	- zavolám book api, odešlu json a získám odpověď
 	- pokud opdověď obsahuje potvrzovací kód, vypíšu konfirmační kód jinak nulu
 
+
+
+
 3) nápověda spuštení:
-=====================
+
 
 	Usage: flight.py [options]
 	
@@ -50,8 +53,11 @@ Obsah nápovědy:
 	  --date		   date of route [YYYY-MM-DD]
 
 
+
+
 4) konfigurační hodnoty v souboru conf.py:
-==========================================
+
+
 
 	flight_search_server_url		- api url for search flights
 	book_api_server					- api url for search flights 
@@ -68,8 +74,11 @@ Obsah nápovědy:
 	psg_birthday 	=  datum narození YYYY-MM-DD
 
 
+
+
 5) příklady použití: 
-====================
+
+
 
 	příklad užití při nastavení logging = 0 (default)
  
