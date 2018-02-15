@@ -14,7 +14,7 @@ iata_source_online_url 				= "https://www.transportation.gov/sites/dot.gov/files
 
 
 # Print additional info about processing [ 1 / 0] 
-logging 							= 1
+logging 							= 0
 
 # Personal settings of user:
 psg_title 		= "Mr"
